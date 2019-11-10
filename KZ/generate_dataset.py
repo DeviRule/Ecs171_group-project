@@ -1,7 +1,18 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 df = pd.read_csv('../Data/creditcard.csv', header=0)
+
+# Comment the following block to remove standarlization
+# Warning: not correctly implemented
+#X = df.loc[:, 'Time':'Amount']
+#Y = df.loc[:, 'Class']
+#scaler = StandardScaler()
+#X = scaler.fit_transform(X)
+#df = X.copy()
+#print(df)
+#df['Class'] = Y['Class']
 
 frauddf = df[df['Class'] == 1]
 notfrauddf = df[df['Class'] == 0]
