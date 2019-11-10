@@ -50,7 +50,7 @@ print(pd.value_counts(Y_resampled))
 
 lr = LogisticRegression(random_state=0, solver='lbfgs')
 classifier = lr.fit(X_resampled, Y_resampled)
-print("Classifer with undersampling dataset: ")
+print("Classifer with oversampling dataset: ")
 Y_predit = classifier.predict(X_valid)
 print(classification_report(Y_valid, Y_predit))
 roc_auc_score(Y_valid, Y_predit)
