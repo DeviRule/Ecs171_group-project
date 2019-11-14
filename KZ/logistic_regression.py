@@ -1,4 +1,5 @@
 import pandas as pd
+from imblearn.over_sampling import SMOTE
 from sklearn.metrics import roc_auc_score
 #from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
@@ -28,7 +29,7 @@ Y_predit = classifier.predict(X_valid)
 print(classification_report(Y_valid, Y_predit))
 roc_auc_score(Y_valid, Y_predit)
 
-#Handle the dataset with undersampling strategy
+# Handle the dataset with undersampling strategy
 rus = RandomUnderSampler(sampling_strategy=0.8)
 X_res, Y_res = rus.fit_resample(X, Y)
 
@@ -42,7 +43,7 @@ Y_predit = classifier.predict(X_valid)
 print(classification_report(Y_valid, Y_predit))
 roc_auc_score(Y_valid, Y_predit)
 
-#Handle the dataset with oversampling strategy
+# Handle the dataset with oversampling strategy
 ros = RandomOverSampler(random_state=0)
 X_resampled, Y_resampled = ros.fit_resample(X, Y)
 
@@ -51,6 +52,19 @@ print(pd.value_counts(Y_resampled))
 lr = LogisticRegression(random_state=0, solver='lbfgs')
 classifier = lr.fit(X_resampled, Y_resampled)
 print("Classifer with oversampling dataset: ")
+Y_predit = classifier.predict(X_valid)
+print(classification_report(Y_valid, Y_predit))
+roc_auc_score(Y_valid, Y_predit)
+
+# Handle the dataset with SMOTE
+SM = SMOTE(random_state=0)
+X_smote, Y_smote = SM.fit_sample(X, Y)
+
+print(pd.value_counts(Y_smote))
+
+lr = LogisticRegression(random_state=0, solver='lbfgs')
+classifier = lr.fit(X_smote, Y_smote)
+print("Classifer with SMOTE on dataset: ")
 Y_predit = classifier.predict(X_valid)
 print(classification_report(Y_valid, Y_predit))
 roc_auc_score(Y_valid, Y_predit)
