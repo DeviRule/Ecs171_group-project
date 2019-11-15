@@ -8,8 +8,8 @@ from imblearn.over_sampling import RandomOverSampler
 from imblearn.under_sampling import RandomUnderSampler
 
 df = pd.read_csv('../Data/train.csv', header=0)
-X = df.loc[:, 'Time':'Amount'].copy()
-Y = df.loc[:, 'Class'].copy()
+X = df.iloc[:,0:-1].copy()
+Y = df.iloc[:, -1].copy()
 
 #scaler = StandardScaler()
 #X = scaler.fit_transform(X)
@@ -18,8 +18,8 @@ lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs
 classifier = lr.fit(X, Y)
 
 df = pd.read_csv('../Data/validation.csv', header=0)
-X_valid = df.loc[:, 'Time':'Amount'].copy()
-Y_valid = df.loc[:, 'Class'].copy()
+X_valid = df.iloc[:,0:-1].copy()
+Y_valid = df.iloc[:, -1].copy()
 #scaler = StandardScaler()
 #X_valid = scaler.fit_transform(X_valid)
 
@@ -49,7 +49,8 @@ X_resampled, Y_resampled = ros.fit_resample(X, Y)
 
 print(pd.value_counts(Y_resampled))
 
-lr = LogisticRegression(random_state=0, solver='lbfgs')
+class_weight = {0: 90, 1: 10}
+lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
 classifier = lr.fit(X_resampled, Y_resampled)
 print("Classifer with oversampling dataset: ")
 Y_predit = classifier.predict(X_valid)
@@ -62,9 +63,11 @@ X_smote, Y_smote = SM.fit_sample(X, Y)
 
 print(pd.value_counts(Y_smote))
 
-lr = LogisticRegression(random_state=0, solver='lbfgs')
+class_weight = {0: 90, 1: 10}
+lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
 classifier = lr.fit(X_smote, Y_smote)
 print("Classifer with SMOTE on dataset: ")
 Y_predit = classifier.predict(X_valid)
 print(classification_report(Y_valid, Y_predit))
 roc_auc_score(Y_valid, Y_predit)
+
