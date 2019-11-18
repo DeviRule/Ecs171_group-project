@@ -100,6 +100,8 @@ maxpos_1 = roc_auc_score_infor[1].index(max(roc_auc_score_infor[1]))
 maxpos_2 = roc_auc_score_infor[2].index(max(roc_auc_score_infor[2]))
 maxpos_3 = roc_auc_score_infor[3].index(max(roc_auc_score_infor[3]))
 
+print([maxpos_0, maxpos_1, maxpos_2, maxpos_3])
+
 print(score_infor[maxpos_0])
 print(score_infor[maxpos_1])
 print(score_infor[maxpos_2])
