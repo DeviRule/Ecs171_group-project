@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 from imblearn.over_sampling import SMOTE
 from sklearn.metrics import roc_auc_score
@@ -34,20 +35,22 @@ SM = SMOTE(random_state=0)
 X_smote, Y_smote = SM.fit_sample(X, Y)
 
 score_infor = [[],[],[],[]]
+roc_auc_score_infor = [[],[],[],[]]
 
 #print(pd.value_counts(Y_smote))
-for weight_percent in range(0, 101):
+for weight_percent in range(1, 100):
 
     class_weight = {0: weight_percent, 1: (100-weight_percent)}
 
     lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
     classifier = lr.fit(X, Y)
     #classifier_probs = classifier.predict_proba(X_valid)
-    print("Classifer with balanced class weight only: ")
+    #print("Classifer with balanced class weight only: ")
     Y_predit = classifier.predict(X_valid)
-    print(classification_report(Y_valid, Y_predit))
-    roc_auc_score(Y_valid, Y_predit)
-
+    #print(classification_report(Y_valid, Y_predit))
+    score_infor[0].append(classification_report(Y_valid, Y_predit))
+    roc_auc_score_infor[0].append(roc_auc_score(Y_valid, Y_predit))
+    
 
 
     #print(pd.value_counts(Y_res))
@@ -55,11 +58,12 @@ for weight_percent in range(0, 101):
     #class_weight = {0: 5, 1: 4}
     lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
     classifier = lr.fit(X_res, Y_res)
-    print("Classifer with undersampling dataset: ")
+    #print("Classifer with undersampling dataset: ")
     Y_predit = classifier.predict(X_valid)
-    print(classification_report(Y_valid, Y_predit))
-    roc_auc_score(Y_valid, Y_predit)
-
+    #print(classification_report(Y_valid, Y_predit))
+    #roc_auc_score(Y_valid, Y_predit)
+    score_infor[1].append(classification_report(Y_valid, Y_predit))
+    roc_auc_score_infor[1].append(roc_auc_score(Y_valid, Y_predit))
 
 
     #print(pd.value_counts(Y_resampled))
@@ -67,17 +71,26 @@ for weight_percent in range(0, 101):
     #class_weight = {0: 90, 1: 10}
     lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
     classifier = lr.fit(X_resampled, Y_resampled)
-    print("Classifer with oversampling dataset: ")
+    #print("Classifer with oversampling dataset: ")
     Y_predit = classifier.predict(X_valid)
-    print(classification_report(Y_valid, Y_predit))
-    roc_auc_score(Y_valid, Y_predit)
-
+    #print(classification_report(Y_valid, Y_predit))
+    score_infor[2].append(classification_report(Y_valid, Y_predit))
+    roc_auc_score_infor[2].append(roc_auc_score(Y_valid, Y_predit))
 
 
     #class_weight = {0: 90, 1: 10}
     lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
     classifier = lr.fit(X_smote, Y_smote)
-    print("Classifer with SMOTE on dataset: ")
+    #print("Classifer with SMOTE on dataset: ")
     Y_predit = classifier.predict(X_valid)
-    print(classification_report(Y_valid, Y_predit))
-    roc_auc_score(Y_valid, Y_predit)
+    #print(classification_report(Y_valid, Y_predit))
+    score_infor[3].append(classification_report(Y_valid, Y_predit))
+    roc_auc_score_infor[3].append(roc_auc_score(Y_valid, Y_predit))
+
+x = np.linspace(1, 99, num=99)
+plt.plot(x, roc_auc_score_infor[0], label="Vanila")
+plt.plot(x, roc_auc_score_infor[1], label="Undersample")
+plt.plot(x, roc_auc_score_infor[2], label="Oversample")
+plt.plot(x, roc_auc_score_infor[3], label="SMOTE")
+plt.legend(loc='best')
+plt.show()
