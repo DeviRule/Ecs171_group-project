@@ -88,7 +88,7 @@ for weight_percent in range(1, 100):
     roc_auc_score_infor[3].append(roc_auc_score(Y_valid, Y_predit))
 
 x = np.linspace(1, 99, num=99)
-plt.plot(x, roc_auc_score_infor[0], label="Vanila")
+plt.plot(x, roc_auc_score_infor[0], label="Vanilla")
 plt.plot(x, roc_auc_score_infor[1], label="Undersample")
 plt.plot(x, roc_auc_score_infor[2], label="Oversample")
 plt.plot(x, roc_auc_score_infor[3], label="SMOTE")
