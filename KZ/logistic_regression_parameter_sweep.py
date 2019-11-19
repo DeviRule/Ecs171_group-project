@@ -115,7 +115,10 @@ maxpos_0 = roc_auc_score_infor[0].index(max(roc_auc_score_infor[0]))
 maxpos_1 = roc_auc_score_infor[1].index(max(roc_auc_score_infor[1]))
 maxpos_2 = roc_auc_score_infor[2].index(max(roc_auc_score_infor[2]))
 maxpos_3 = roc_auc_score_infor[3].index(max(roc_auc_score_infor[3]))
-
+print(maxpos_0)
+print(maxpos_1)
+print(maxpos_2)
+print(maxpos_3)
 print([roc_auc_score_infor[0][maxpos_0], roc_auc_score_infor[1][maxpos_1], roc_auc_score_infor[2][maxpos_2], roc_auc_score_infor[3][maxpos_3]])
 
 print(score_infor[0][maxpos_0])
@@ -127,7 +130,10 @@ maxpos_0 = f1_score_infor[0].index(max(f1_score_infor[0]))
 maxpos_1 = f1_score_infor[1].index(max(f1_score_infor[1]))
 maxpos_2 = f1_score_infor[2].index(max(f1_score_infor[2]))
 maxpos_3 = f1_score_infor[3].index(max(f1_score_infor[3]))
-
+print(maxpos_0)
+print(maxpos_1)
+print(maxpos_2)
+print(maxpos_3)
 print([f1_score_infor[0][maxpos_0], f1_score_infor[1][maxpos_1], f1_score_infor[2][maxpos_2], f1_score_infor[3][maxpos_3]])
 
 print(score_infor[0][maxpos_0])
