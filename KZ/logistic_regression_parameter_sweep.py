@@ -134,3 +134,5 @@ print(score_infor[0][maxpos_0])
 print(score_infor[1][maxpos_1])
 print(score_infor[2][maxpos_2])
 print(score_infor[3][maxpos_3])
+
+# updated version
