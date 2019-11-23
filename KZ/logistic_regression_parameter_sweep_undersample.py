@@ -206,3 +206,12 @@ Y_predit = best_model_f1score.predict(X_valid)
 Y_prob = best_model_f1score.predict_proba(X_valid)
 Draw_ROC(Y_prob, Y_valid, 'Model selected by f1_score')
 Draw_PR(Y_prob, Y_predit, Y_valid, 'Model selected by f1_score')
+
+print("Check overfitting")
+print(classification_report(Y_valid, best_model_aucrocscore.predict(X_valid)))
+reports = [classification_report(Y, best_model_aucrocscore.predict(X)), classification_report(Y_res, best_model_aucrocscore.predict(X_res)), classification_report(Y_resampled, best_model_aucrocscore.predict(X_resampled)), classification_report(Y_smote, best_model_aucrocscore.predict(X_smote))]
+print(reports[best_f1_score])
+
+print(classification_report(Y_valid, best_model_f1score.predict(X_valid)))
+reports = [classification_report(Y, best_model_f1score.predict(X)), classification_report(Y_res, best_model_f1score.predict(X_res)), classification_report(Y_resampled, best_model_f1score.predict(X_resampled)), classification_report(Y_smote, best_model_f1score.predict(X_smote))]
+print(reports[best_f1_score])
