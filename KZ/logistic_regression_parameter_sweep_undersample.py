@@ -14,7 +14,6 @@ from sklearn.metrics import auc,roc_auc_score,roc_curve,precision_recall_curve
 
 def Draw_ROC(Y_prob, Y_observed, model_name = 'Model'):
     ns_probs = [0 for _ in range(len(Y_observed))]
-    Y_prob = Y_prob[:, 1]
     # calculate scores
     ns_auc = roc_auc_score(Y_observed, ns_probs)
     lr_auc = roc_auc_score(Y_observed, Y_prob)
@@ -28,6 +27,7 @@ def Draw_ROC(Y_prob, Y_observed, model_name = 'Model'):
     plt.plot(ns_fpr, ns_tpr, linestyle='--', label='Chance')
     plt.plot(lr_fpr, lr_tpr, marker='.', label=model_name)
     # axis labels
+    plt.title('Receiver operating characteristic curve')
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     # show the legend
@@ -36,7 +36,6 @@ def Draw_ROC(Y_prob, Y_observed, model_name = 'Model'):
     plt.show()
 
 def Draw_PR(Y_prob, Y_predicted, Y_observed, model_name = 'Model'):
-    Y_prob = Y_prob[:, 1]
     # predict class values
     lr_precision, lr_recall, _ = precision_recall_curve(Y_observed, Y_prob, pos_label=1)
     lr_f1, lr_auc = f1_score(Y_observed, Y_predicted), auc(lr_recall, lr_precision)
@@ -47,6 +46,7 @@ def Draw_PR(Y_prob, Y_predicted, Y_observed, model_name = 'Model'):
     plt.plot([0, 1], [no_skill, no_skill], linestyle='--', label='Chance')
     plt.plot(lr_recall, lr_precision, marker='.', label=model_name)
     # axis labels
+    plt.title('2-class Precision-Recall curve')
     plt.xlabel('Recall')
     plt.ylabel('Precision')
     # show the legend
@@ -104,6 +104,8 @@ for weight_percent in range(1, 100):
     roc_auc_score_infor[0].append(roc_auc_score(Y_valid, Y_predit))
     models[0].append(classifier)
     #print(pd.value_counts(Y_res))
+    #Draw_ROC(Y_prob[:, 1], Y_valid, 'Model selected by roc_auc_score')
+    #Draw_PR(Y_prob[:, 1], Y_predit, Y_valid, 'Model selected by roc_auc_score')
 
     #class_weight = {0: 5, 1: 4}
     lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
@@ -199,13 +201,13 @@ best_model_f1score = models[best_f1_score][model_index_f1[best_f1_score]]
 
 Y_predit = best_model_aucrocscore.predict(X_valid)
 Y_prob = best_model_aucrocscore.predict_proba(X_valid)
-Draw_ROC(Y_prob, Y_valid, 'Model selected by roc_auc_score')
-Draw_PR(Y_prob, Y_predit, Y_valid, 'Model selected by roc_auc_score')
+Draw_ROC(Y_prob[:, 1], Y_valid, 'Model selected by roc_auc_score')
+Draw_PR(Y_prob[:, 1], Y_predit, Y_valid, 'Model selected by roc_auc_score')
 
 Y_predit = best_model_f1score.predict(X_valid)
 Y_prob = best_model_f1score.predict_proba(X_valid)
-Draw_ROC(Y_prob, Y_valid, 'Model selected by f1_score')
-Draw_PR(Y_prob, Y_predit, Y_valid, 'Model selected by f1_score')
+Draw_ROC(Y_prob[:, 1], Y_valid, 'Model selected by f1_score')
+Draw_PR(Y_prob[:, 1], Y_predit, Y_valid, 'Model selected by f1_score')
 
 print("Check overfitting")
 print(classification_report(Y_valid, best_model_aucrocscore.predict(X_valid)))
