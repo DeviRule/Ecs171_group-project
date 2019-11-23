@@ -94,7 +94,7 @@ for weight_percent in range(1, 100):
     #classifier_probs = classifier.predict_proba(X_valid)
     #print("Classifer with balanced class weight only: ")
     Y_predit = classifier.predict(X_valid)
-    Y_prob = classifier.predict_proba(X_valid)
+    #Y_prob = classifier.predict_proba(X_valid)
     #print(classification_report(Y_valid, Y_predit))
     report = classification_report(Y_valid, Y_predit, output_dict = True)
     f1_score_infor[0].append(report['1']['f1-score'])
@@ -104,8 +104,6 @@ for weight_percent in range(1, 100):
     roc_auc_score_infor[0].append(roc_auc_score(Y_valid, Y_predit))
     models[0].append(classifier)
     #print(pd.value_counts(Y_res))
-    Draw_ROC(Y_prob, Y_valid)
-    Draw_PR(Y_prob, Y_predit, Y_valid)
 
     #class_weight = {0: 5, 1: 4}
     lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
@@ -197,4 +195,14 @@ print(score_infor[1][maxpos_1])
 print(score_infor[2][maxpos_2])
 print(score_infor[3][maxpos_3])
 
+best_model_f1score = models[best_f1_score][model_index_f1[best_f1_score]]
 
+Y_predit = best_model_aucrocscore.predict(X_valid)
+Y_prob = best_model_aucrocscore.predict_proba(X_valid)
+Draw_ROC(Y_prob, Y_valid, 'Model selected by roc_auc_score')
+Draw_PR(Y_prob, Y_predit, Y_valid, 'Model selected by roc_auc_score')
+
+Y_predit = best_model_f1score.predict(X_valid)
+Y_prob = best_model_f1score.predict_proba(X_valid)
+Draw_ROC(Y_prob, Y_valid, 'Model selected by f1_score')
+Draw_PR(Y_prob, Y_predit, Y_valid, 'Model selected by f1_score')
