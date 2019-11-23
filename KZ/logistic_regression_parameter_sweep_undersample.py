@@ -37,6 +37,7 @@ X_smote, Y_smote = SM.fit_sample(X, Y)
 score_infor = [[],[],[],[]]
 roc_auc_score_infor = [[],[],[],[]]
 f1_score_infor = [[],[],[],[]]
+models = [[],[],[],[]]
 
 #print(pd.value_counts(Y_smote))
 for weight_percent in range(1, 100):
@@ -55,7 +56,7 @@ for weight_percent in range(1, 100):
     #print(f1_score_infor[0])
     score_infor[0].append(report)
     roc_auc_score_infor[0].append(roc_auc_score(Y_valid, Y_predit))
-    
+    models[0].append(classifier)
     #print(pd.value_counts(Y_res))
 
     #class_weight = {0: 5, 1: 4}
@@ -69,7 +70,7 @@ for weight_percent in range(1, 100):
     f1_score_infor[1].append(report['1']['f1-score'])
     score_infor[1].append(report)
     roc_auc_score_infor[1].append(roc_auc_score(Y_valid, Y_predit))
-
+    models[1].append(classifier)
 
     #print(pd.value_counts(Y_resampled))
 
@@ -83,7 +84,7 @@ for weight_percent in range(1, 100):
     f1_score_infor[2].append(report['1']['f1-score'])
     score_infor[2].append(report)
     roc_auc_score_infor[2].append(roc_auc_score(Y_valid, Y_predit))
-
+    models[2].append(classifier)
 
     #class_weight = {0: 90, 1: 10}
     lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
@@ -95,6 +96,7 @@ for weight_percent in range(1, 100):
     f1_score_infor[3].append(report['1']['f1-score'])
     score_infor[3].append(report)
     roc_auc_score_infor[3].append(roc_auc_score(Y_valid, Y_predit))
+    models[3].append(classifier)
 
 x = np.linspace(1, 99, num=99)
 plt.plot(x, roc_auc_score_infor[0], label="Vanilla")
