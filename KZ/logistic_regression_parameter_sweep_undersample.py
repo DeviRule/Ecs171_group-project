@@ -147,6 +147,7 @@ for weight_percent in range(1, 100):
     models[3].append(classifier)
 
 x = np.linspace(1, 99, num=99)
+plt.title('AUCROC Score Vs. Class Weight')
 plt.plot(x, roc_auc_score_infor[0], label="Vanilla")
 plt.plot(x, roc_auc_score_infor[1], label="Undersample")
 plt.plot(x, roc_auc_score_infor[2], label="Oversample")
@@ -154,6 +155,7 @@ plt.plot(x, roc_auc_score_infor[3], label="SMOTE")
 plt.legend(loc='best')
 plt.show()
 
+plt.title('F1 Score of Fraud Class Vs. Class Weight')
 plt.plot(x, f1_score_infor[0], label="Vanilla")
 plt.plot(x, f1_score_infor[1], label="Undersample")
 plt.plot(x, f1_score_infor[2], label="Oversample")
