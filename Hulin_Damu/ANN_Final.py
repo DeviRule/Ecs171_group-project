@@ -19,6 +19,9 @@ import matplotlib.pyplot as plt
 from inspect import signature
 from scipy import interp
 
+'''
+ANN implemented by Hulin Wang and Damu Gao
+'''
 
 def Draw_ROC(Y_prob, Y_observed, model_name = 'ANN'):
     ns_probs = [0 for _ in range(len(Y_observed))]
