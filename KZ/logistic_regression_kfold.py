@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from scipy import interp
 import matplotlib.pyplot as plt
+from imblearn.over_sampling import SMOTE
 from sklearn.metrics import roc_curve, auc
 from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold
@@ -17,8 +18,8 @@ def FiveFoldROC(estimator, X, y):
     cv = StratifiedKFold(n_splits=5)
     for train, test in cv.split(X, y):
     # Compute ROC curve and area the curve
-        print(train)
-        print(test)
+        #print(train)
+        #print(test)
         estimator.fit(X[train], y[train])
         y_score = estimator.predict_proba(X[test])[:,1]
         fpr, tpr, thresholds = roc_curve(y[test], y_score, pos_label=1)
@@ -55,7 +56,27 @@ def FiveFoldROC(estimator, X, y):
     plt.legend(loc="lower right")
     plt.show()
 
+# test on original dataset
+df = pd.read_csv('../Data/train.csv', header=0)
+X = df.iloc[:,0:-1].copy()
+Y = df.iloc[:, -1].copy()
+
+df = pd.read_csv('../Data/validation_under.csv', header=0)
+X_valid = df.iloc[:,0:-1].copy()
+Y_valid = df.iloc[:, -1].copy()
+
+# Handle the dataset with SMOTE
+SM = SMOTE(random_state=0)
+X_smote, Y_smote = SM.fit_sample(X, Y)
+
+class_weight = {0: 33, 1: 67}
+lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
+lr.fit(X, Y)
+Y_predit = lr.predict(X_valid)
+print(classification_report(Y_valid, Y_predit))
+
 df = pd.read_csv('../Data/creditcard.csv', header=0)
+df = df.sample(frac=1).reset_index(drop=True)
 X = df.iloc[:,0:-1].copy()
 y = df.iloc[:, -1].copy()
 rus = RandomUnderSampler(sampling_strategy=1)
