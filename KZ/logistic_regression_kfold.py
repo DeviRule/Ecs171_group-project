@@ -71,8 +71,10 @@ X_smote, Y_smote = SM.fit_sample(X, Y)
 
 class_weight = {0: 33, 1: 67}
 lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
-lr.fit(X, Y)
+lr.fit(X_smote, Y_smote)
 Y_predit = lr.predict(X_valid)
+Y_train = lr.predict(X_smote)
+print(classification_report(Y_smote, Y_train))
 print(classification_report(Y_valid, Y_predit))
 
 df = pd.read_csv('../Data/creditcard.csv', header=0)
