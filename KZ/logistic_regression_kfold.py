@@ -7,6 +7,7 @@ from sklearn.metrics import roc_curve, auc
 from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold
 from sklearn.linear_model import LogisticRegression
+from imblearn.under_sampling import RandomUnderSampler
 
 def FiveFoldROC(estimator, X, y):
     tprs = []
@@ -54,10 +55,12 @@ def FiveFoldROC(estimator, X, y):
     plt.legend(loc="lower right")
     plt.show()
 
-df = pd.read_csv('../Data/validation_smote.csv', header=0)
+df = pd.read_csv('../Data/creditcard.csv', header=0)
 X = df.iloc[:,0:-1].copy()
 y = df.iloc[:, -1].copy()
+rus = RandomUnderSampler(sampling_strategy=1)
+X_res, y_res = rus.fit_resample(X, y)
 
 class_weight = {0: 33, 1: 67}
 lr = LogisticRegression(random_state=0, class_weight=class_weight, solver='lbfgs')
-FiveFoldROC(lr, X.to_numpy(), y.to_numpy())
+FiveFoldROC(lr, X_res, y_res)
