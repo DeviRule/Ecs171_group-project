@@ -23,27 +23,54 @@ from scipy import interp
 ANN implemented by Hulin Wang and Damu Gao
 '''
 
-def Draw_ROC(Y_prob, Y_observed, model_name = 'ANN'):
-    ns_probs = [0 for _ in range(len(Y_observed))]
-    # calculate scores
-    ns_auc = roc_auc_score(Y_observed, ns_probs)
-    lr_auc = roc_auc_score(Y_observed, Y_prob)
-    # summarize scores
-    print('Chance: ROC AUC=%.3f' % (ns_auc))
-    print('%s: ROC AUC=%.3f' % (model_name, lr_auc))
-    # calculate roc curves
-    ns_fpr, ns_tpr, _ = roc_curve(Y_observed, ns_probs, pos_label=1)
-    lr_fpr, lr_tpr, _ = roc_curve(Y_observed, Y_prob, pos_label=1)
-    # plot the roc curve for the model
-    plt.plot(ns_fpr, ns_tpr, linestyle='--', label='Chance')
-    plt.plot(lr_fpr, lr_tpr, marker='.', label=model_name)
-    # axis labels
-    plt.title('Receiver operating characteristic curve')
+def Draw_ROC(df_test_under, pred_under, model_name = 'ANN'):
+    #data transformation to roc curve
+    df_test_under_roc= df_test_under['Class'].to_numpy().reshape(-1, 1)
+    pred_under_roc = np.array(pred_under).reshape(-1, 1)
+    df_test_under_data = df_test_under.drop(columns = ['Amount','Class'])
+    df_test_under_result = df_test_under['Class']
+    
+    #roc curve with cross-validation
+    
+    tprs = []
+    aucs = []
+    mean_fpr = np.linspace(0, 1, 100)
+    i = 0
+    cv = StratifiedKFold(n_splits=6)
+    for train, test in cv.split(df_test_under_data, df_test_under_result):
+    # Compute ROC curve and area the curve
+        fpr, tpr, thresholds = roc_curve(df_test_under_roc[test], pred_under_roc[test], pos_label=1)
+        tprs.append(interp(mean_fpr, fpr, tpr))
+        tprs[-1][0] = 0.0
+        roc_auc = auc(fpr, tpr)
+        aucs.append(roc_auc)
+        plt.plot(fpr, tpr, lw=1, alpha=0.3,
+             label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
+
+        i += 1
+    plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r',
+         label='Chance', alpha=.8)
+
+    mean_tpr = np.mean(tprs, axis=0)
+    mean_tpr[-1] = 1.0
+    mean_auc = auc(mean_fpr, mean_tpr)
+    std_auc = np.std(aucs)
+    plt.plot(mean_fpr, mean_tpr, color='b',
+         label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc),
+         lw=2, alpha=.8)
+
+    std_tpr = np.std(tprs, axis=0)
+    tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+    tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+    plt.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
+                 label=r'$\pm$ 1 std. dev.')
+
+    plt.xlim([-0.05, 1.05])
+    plt.ylim([-0.05, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    # show the legend
-    plt.legend()
-    # show the plot
+    plt.title('Receiver operating characteristic')
+    plt.legend(loc="lower right")
     plt.show()
 
 def Draw_PR(Y_prob, Y_predicted, Y_observed, model_name = 'ANN'):
@@ -69,7 +96,7 @@ def ANN():
     df_train = pd.read_csv('../Data/train.csv')
     df_test = pd.read_csv('../Data/validation.csv')
     
-    df_test_under = pd.read_csv('../Data/validation_under.csv')
+    df_test_under = pd.read_csv('../Data/total_under.csv')
     
     # preprocessing data    
     df_train_data = df_train.drop(columns = ['Amount','Class'])
@@ -84,7 +111,7 @@ def ANN():
 
 
     df_test_result = to_categorical(df_test_result)
-    epochs = 450
+    epochs = 500
     #create ANN model
     model = Sequential([
         Dense(64, kernel_initializer='glorot_normal',
@@ -127,8 +154,9 @@ def ANN():
     
     df_test_under_prob = [df_test_under_pred[i][1] for i in range(0,len(pred_under))]
     # plot roc and pr curve
-    Draw_ROC(df_test_under_prob,df_test_under_report)
+    Draw_ROC(df_test_under, pred_under)
     Draw_PR(df_test_under_prob,pred_under,df_test_under_report)
+   
    
 def main():
     ANN()
