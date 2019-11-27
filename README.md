@@ -25,7 +25,7 @@ For **decision tree** script, please extract code to parent directory.
 ### Outline
 The project consists of file scripts, together with utility functions inside the file folder ```Utility```.
 
-```RF_new_local.ipynb```: random forest
+```RF_kfold_under.ipynb```: random forest ROC graph 
 
 ```decision_tree_grid_search.py```: decision tree
 
