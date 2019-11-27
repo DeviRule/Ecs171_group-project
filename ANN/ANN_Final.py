@@ -36,6 +36,7 @@ def Draw_ROC(df_test_under, pred_under, model_name = 'ANN'):
     aucs = []
     mean_fpr = np.linspace(0, 1, 100)
     i = 0
+    #Split train and test 
     cv = StratifiedKFold(n_splits=6)
     for train, test in cv.split(df_test_under_data, df_test_under_result):
     # Compute ROC curve and area the curve
