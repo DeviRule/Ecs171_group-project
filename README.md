@@ -27,8 +27,6 @@ For **decision tree** script, please extract code to parent directory.
 ### Outline
 The project consists of file scripts, together with utility functions inside the file folder ```Utility```.
 
-```RF_kfold_under.ipynb```: random forest ROC graph 
-
 ```decision_tree_grid_search.py```: decision tree
 
 ```distribution.py```: preprocessing distribution
@@ -40,6 +38,9 @@ The project consists of file scripts, together with utility functions inside the
 ```SNE_KNN.ipynb```: TSNE and KNN
 
 ```ANN_kfold.ipynb```: Feed-Forward Neural Network
+
+```RF_kfold_under.ipynb```: random forest ROC graph 
+```RF_final_under.ipynb```: Pr Curve, Classification Report 
 
 ```logistic_regression_parameter_sweep_undersample.ipynb```: Logistic Regression Parameter Tuning
 
