@@ -18,6 +18,10 @@ Kaggle Dataset download link: https://www.kaggle.com/mlg-ulb/creditcardfraud
 
 The output will be automatically saved to current folder or printed out during runtime.
 
+For **decision tree** script, please extract code to parent directory.
+
+
+
 ### Outline
 The project consists of file scripts, together with utility functions inside the file folder ```Utility```.
 
