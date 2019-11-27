@@ -31,14 +31,14 @@ The project consists of file scripts, together with utility functions inside the
 
 ```preprocessing_comparision.ipynb```: SMOTE performance
 
-```Ababoost_code```: Adaboost
+```Adaboost_main.py```: Adaboost
 
 ```SNE_KNN.ipynb```: TSNE and KNN
 
-```ANN-kfold.ipynb```: Feed-Forward Neural Network
+```ANN_kfold.ipynb```: Feed-Forward Neural Network
 
 ### Dependencies
-+ **Programming Tools**: *Python* and *Jupyter Notebook*
++ **Programming Tools**: *Python3* and *Jupyter Notebook*
 + **Libraries**: *imblearn*, *sklearn*, *Keras*, *matplotlib*, *graphviz* and *pandas*
 
 ### Paper and Code connection
