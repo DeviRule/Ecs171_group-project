@@ -13,7 +13,7 @@ Created on Sun Nov 24 19:03:22 2019
 
 from AdaBoost_funcs import Draw_PR
 from AdaBoost_funcs import make_predictions
-from AdaBoost_funcs import get_decision_ROC
+from AdaBoost_funcs import get_ROC_5fold_plot
 import pandas as pd
 from sklearn.ensemble import AdaBoostClassifier
 
@@ -111,6 +111,6 @@ print('\n')
 
 # PR/ROC curve
 
-get_decision_ROC(clf, validation_under_data[predictors_str].values, validation_under_data[target].values)
+get_ROC_5fold_plot(clf, validation_under_data[predictors_str].values, validation_under_data[target].values)
 Draw_PR(prob_valid_under, predictions_valid_under, validation_under_data[target].values, 
         is_draw_dot = True,model_name = 'AdaBoost',is_save_fig=True)

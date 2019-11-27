@@ -262,8 +262,7 @@ def Draw_PR_ROC(Y_prob, Y_predicted,
     plt.show()
 ###############################################################################
 
-def get_decision_ROC(classifier, X_test, y_test):
-
+def get_ROC_5fold_plot(classifier, X, y):
     """get_decision_ROC the utility function to plot precision and recall curve
        out of a 5-fold validation
 
@@ -275,30 +274,27 @@ def get_decision_ROC(classifier, X_test, y_test):
               X_test
               ndarray
               Features from the test set input
-
+              
               y_test
               ndarray
               predictions from the test set
 
     """
-
     cv = StratifiedKFold(n_splits=5)
     fig = plt.figure()
     tprs = []
     aucs = []
     mean_fpr = np.linspace(0, 1, 100)
-    y = label_binarize(y_test, classes=[0, 1])
-    plt.figure()
     i = 0
-    for train, test in cv.split(X_test, y_test):
-        y_score = classifier.predict_proba(X_test[test])
+    for train, test in cv.split(X, y):
+        probas_ = classifier.fit(X[train], y[train]).predict_proba(X[test])
         # Compute ROC curve and area the curve
-        fpr, tpr, thresholds = roc_curve(y[test], y_score[:, 1])
+        fpr, tpr, thresholds = roc_curve(y[test], probas_[:, 1])
         tprs.append(interp(mean_fpr, fpr, tpr))
         tprs[-1][0] = 0.0
         roc_auc = auc(fpr, tpr)
         aucs.append(roc_auc)
-        plt.plot(fpr, tpr, lw=2, alpha=0.3,
+        plt.plot(fpr, tpr, lw=1, alpha=0.3,
                  label='ROC fold %d (AUC = %0.2f)' % (i, roc_auc))
 
         i += 1
@@ -323,6 +319,7 @@ def get_decision_ROC(classifier, X_test, y_test):
     plt.ylim([-0.05, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
+    plt.title('Receiver operating characteristic example')
     plt.legend(loc="lower right")
     plt.savefig('5-fold-validation ROC AdaBoost.pdf',dpi=300)
     plt.show()
