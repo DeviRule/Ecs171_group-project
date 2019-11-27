@@ -19,7 +19,7 @@ Kaggle Dataset download link: https://www.kaggle.com/mlg-ulb/creditcardfraud
 The output will be automatically saved to current folder or printed out during runtime.
 
 ### Outline
-The project consists of file scripts, together with utility functions inside the file folder ```libs```.
+The project consists of file scripts, together with utility functions inside the file folder ```Utility```.
 
 ```RF_new_local.ipynb```: random forest
 
@@ -36,6 +36,10 @@ The project consists of file scripts, together with utility functions inside the
 ```SNE_KNN.ipynb```: TSNE and KNN
 
 ```ANN_kfold.ipynb```: Feed-Forward Neural Network
+
+```logistic_regression_parameter_sweep_undersample.ipynb```: Logistic Regression Parameter Tuning
+
+```logistic_regression_kfold.py```: Logistic Regression Best Model Performance
 
 ### Dependencies
 + **Programming Tools**: *Python3* and *Jupyter Notebook*
