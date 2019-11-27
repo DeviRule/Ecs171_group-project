@@ -1,3 +1,4 @@
 # ignore data file
 /Data/creditcard.csv
 *.zip
+/KNN/.ipynb_checkpoints/*
