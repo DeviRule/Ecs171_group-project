@@ -39,8 +39,9 @@ The project consists of file scripts, together with utility functions inside the
 
 ```ANN_kfold.ipynb```: Feed-Forward Neural Network
 
-```RF_kfold_under.ipynb```: random forest ROC graph 
-```RF_final_under.ipynb```: Pr Curve, Classification Report 
+```RF_kfold_under.ipynb```: Random Forest ROC graph 
+
+```RF_final_under.ipynb```: Random Forest Pr Curve, Classification Report 
 
 ```logistic_regression_parameter_sweep_undersample.ipynb```: Logistic Regression Parameter Tuning
 
