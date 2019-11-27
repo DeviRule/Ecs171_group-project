@@ -31,8 +31,6 @@ The project consists of file scripts, together with utility functions inside the
 
 ```distribution.py```: preprocessing distribution
 
-```k_nearest_neighbour.ipynb```: KNN
-
 ```preprocessing_comparision.ipynb```: SMOTE performance
 
 ```Adaboost_main.py```: Adaboost
