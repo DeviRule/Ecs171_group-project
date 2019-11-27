@@ -1,3 +1,5 @@
+# ECS 171 Final Project
+
 ### What is this project about?
 This project is about solving the binary classification problem (fraud detection) based on the dataset retrieved from https://www.kaggle.com/mlg-ulb/creditcardfraud. Please check the paper for more details.
 
